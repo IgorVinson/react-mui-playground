@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Card, CardMedia} from '@mui/material';
+import React, {useRef, useState} from 'react';
+import {Card, CardMedia, Container} from '@mui/material';
 import {styled} from '@mui/system';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -8,14 +8,6 @@ interface Image {
     title: string;
     imageUrl: string;
 }
-
-const CarouselCard = styled(Card)({
-    position: 'relative',
-    // margin: '0 1rem',
-    display: 'flex',
-    justifyContent: 'center',
-    borderRadius: 0,
-});
 
 const PrevButton = styled(NavigateBeforeIcon)({
     display: 'flex',
@@ -28,6 +20,10 @@ const PrevButton = styled(NavigateBeforeIcon)({
     top: '50%',
     left: 0,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+
+    }
 });
 
 const NextButton = styled(NavigateNextIcon)({
@@ -36,6 +32,7 @@ const NextButton = styled(NavigateNextIcon)({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
+    zIndex: 1,
     borderRadius: '50%',
     cursor: 'pointer',
     top: '50%',
@@ -47,7 +44,8 @@ const IndicatorsContainer = styled('div')({
     position: 'absolute',
     bottom: '10px',
     display: 'flex',
-    width: '100px'
+    width: '100px',
+
 })
 
 const Indicator = styled('div')({
@@ -56,6 +54,10 @@ const Indicator = styled('div')({
     borderRadius: '50%',
     cursor: 'pointer',
     margin: '0 5px',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    },
 });
 
 const images: Image[] = [
@@ -79,7 +81,8 @@ const images: Image[] = [
 
 const CarouselGallery: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState<number>(0);
-
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    
     const handlePrevClick = () => {
         setActiveIndex(prevIndex => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
     };
@@ -91,23 +94,30 @@ const CarouselGallery: React.FC = () => {
     }
 
     return (
-        <CarouselCard>
+        <div style={{position: 'relative'}}
+             onMouseEnter={() => setIsHovered(true)}
+             onMouseLeave={() => setIsHovered(false)} >
             <CardMedia
                 component="img"
                 image={images[activeIndex].imageUrl}
                 title={images[activeIndex].title}
             />
-            <IndicatorsContainer>
-                {images.map((_, index) => (
-                    <Indicator
-                        style={{backgroundColor: index === activeIndex ? 'white' : 'rgba(255, 255, 255, 0.5)',}}
-                        onClick={() => handleIndicatorClick(index)}
-                    />
-                ))}
-            </IndicatorsContainer>
-            <PrevButton onClick={handlePrevClick}/>
-            <NextButton onClick={handleNextClick}/>
-        </CarouselCard>
+
+            {isHovered &&
+                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                    <IndicatorsContainer>
+                        {images.map((_, index) => (
+                            <Indicator
+                                style={{backgroundColor: index === activeIndex ? 'white' : 'rgba(255, 255, 255, 0.5)'}}
+                                onClick={() => handleIndicatorClick(index)}
+                            />
+                        ))}
+                    </IndicatorsContainer>
+                    <PrevButton onClick={handlePrevClick}/>
+                    <NextButton onClick={handleNextClick}/>
+                </div>
+            }
+        </div>
     );
 };
 

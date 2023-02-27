@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Card from './components/Card';
+import CaruselGallery from './components/CarouselGallery';
 
 function App() {
     return (
@@ -8,6 +9,7 @@ function App() {
                 {/*<CaruselGallery/>*/}
                 {/*<CarouselV2/>*/}
                 <Card/>
+                {/*<CaruselGallery/>*/}
             </>
     );
 }
