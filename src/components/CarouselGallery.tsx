@@ -102,12 +102,12 @@ const CarouselGallery: React.FC = () => {
                 image={images[activeIndex].imageUrl}
                 title={images[activeIndex].title}
             />
-
             {isHovered &&
                 <div style={{display: 'flex', justifyContent: 'space-around'}}>
                     <IndicatorsContainer>
                         {images.map((_, index) => (
                             <Indicator
+                                key={index}
                                 style={{backgroundColor: index === activeIndex ? 'white' : 'rgba(255, 255, 255, 0.5)'}}
                                 onClick={() => handleIndicatorClick(index)}
                             />
